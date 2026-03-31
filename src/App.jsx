@@ -652,7 +652,7 @@ export default function App() {
           <div style={{fontSize:26,fontWeight:500,lineHeight:1.2}}>NT${fmt(tmSpend)}</div>
           <div style={{fontSize:11,color:'var(--text2)',marginTop:2}}>固定 NT${fmt(mInstTotal+mSubTotal)}</div>
         </div>
-        <button onClick={()=>setModal('typeSelect')} style={s.btn('var(--info-bg)','var(--info)')({}).valueOf?.()??{padding:'9px 16px',border:'none',borderRadius:'var(--radius)',background:'var(--info-bg)',color:'var(--info)',cursor:'pointer',fontSize:13,fontWeight:500,marginTop:4}}>
+        <button onClick={()=>setModal('typeSelect')} style={{padding:'9px 16px',border:'none',borderRadius:'var(--radius)',background:'var(--info-bg)',color:'var(--info)',cursor:'pointer',fontSize:13,fontWeight:500,marginTop:4}}>
           + 記帳
         </button>
       </div>
