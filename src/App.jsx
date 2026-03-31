@@ -411,11 +411,19 @@ export default function App() {
   const callGemini = async (prompt, imgBase64=null, mime='image/jpeg') => {
     const parts = [{text:prompt}]
     if (imgBase64) parts.unshift({inline_data:{mime_type:mime,data:imgBase64}})
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiKey}`,{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{parts}]})
-    })
-    if (!res.ok) throw new Error(`API 錯誤 ${res.status}`)
+    const payload = { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({contents:[{parts}]}) }
+    
+    const models = ['v1beta/models/gemini-2.5-flash', 'v1beta/models/gemini-2.0-flash', 'v1beta/models/gemini-2.0-flash-exp', 'v1beta/models/gemini-1.5-flash']
+    let res = null, status = 0
+    
+    for (const m of models) {
+      res = await fetch(`https://generativelanguage.googleapis.com/${m}:generateContent?key=${geminiKey}`, payload)
+      if (res.ok) break
+      status = res.status
+      if (status === 400 || status === 403) break // Bad request/unauthorized usually means invalid API key, stop trying
+    }
+    
+    if (!res || !res.ok) throw new Error(status===400?'400 (金鑰格式錯誤)':status===403?'403 (金鑰權限無效)':`API 錯誤 ${status}`)
     const d = await res.json()
     const text = d.candidates?.[0]?.content?.parts?.[0]?.text
     if (!text) throw new Error('無回應')
