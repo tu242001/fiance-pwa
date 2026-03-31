@@ -411,7 +411,7 @@ export default function App() {
   const callGemini = async (prompt, imgBase64=null, mime='image/jpeg') => {
     const parts = [{text:prompt}]
     if (imgBase64) parts.unshift({inline_data:{mime_type:mime,data:imgBase64}})
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,{
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({contents:[{parts}]})
     })
